@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="900"
+   height="900"
+   viewBox="-36 -24 72 72"
+   version="1.1"
+   id="svg26"
+   sodipodi:docname="ko.svg"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs30" />
+  <sodipodi:namedview
+     id="namedview28"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     height="900px"
+     inkscape:zoom="0.65583333"
+     inkscape:cx="449.8094"
+     inkscape:cy="483.35451"
+     inkscape:window-width="1920"
+     inkscape:window-height="995"
+     inkscape:window-x="0"
+     inkscape:window-y="48"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg26" />
+  <title
+     id="title2">Flag of South Korea</title>
+  <path
+     d="M -36,-12 H 36 V 36 H -36 Z"
+     fill="#ffffff"
+     id="path4" />
+  <g
+     transform="rotate(-56.309933,11.211102,6)"
+     id="g18">
+    <!--arctan(-3/2)-->
+    <g
+       id="b2">
+      <path
+         id="b"
+         d="M -6,-26 H 6 v 2 H -6 Z m 0,3 H 6 v 2 H -6 Z m 0,3 H 6 v 2 H -6 Z" />
+      <use
+         xlink:href="#b"
+         y="44"
+         id="use7"
+         x="0"
+         width="100%"
+         height="100%" />
+    </g>
+    <path
+       stroke="#ffffff"
+       d="M 0,17 V 27"
+       id="path10" />
+    <path
+       fill="#cd2e3a"
+       d="M 0,-12 A 12,12 0 0 1 0,12 Z"
+       id="path12" />
+    <path
+       fill="#0047a0"
+       d="M 0,-12 A 12,12 0 0 0 0,12 6,6 0 0 0 0,0 Z"
+       id="path14" />
+    <circle
+       cy="-6"
+       fill="#cd2e3a"
+       r="6"
+       id="circle16"
+       cx="0" />
+  </g>
+  <g
+     transform="rotate(-123.69007,3.2111024,6)"
+     id="g24">
+    <use
+       xlink:href="#b2"
+       id="use20"
+       x="0"
+       y="0"
+       width="100%"
+       height="100%" />
+    <path
+       stroke="#ffffff"
+       d="m 0,-23.5 v 3 M 0,17 v 3.5 m 0,3 v 3"
+       id="path22" />
+  </g>
+  <metadata
+     id="metadata847">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Flag of South Korea</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>
