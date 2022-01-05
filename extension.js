@@ -4,7 +4,7 @@
 
 const GETTEXT_DOMAIN = 'clip-translator';
 
-const { GObject, Gio, St } = imports.gi;
+const { GObject, GLib, Gio, St } = imports.gi;
 
 const Gettext = imports.gettext.domain(GETTEXT_DOMAIN);
 const _ = Gettext.gettext;
@@ -17,6 +17,7 @@ const PopupMenu = imports.ui.popupMenu;
 	let action = 0;	// 0 is none, 1 is primary_icon, 2 is secondary_icon.
 	let from = 'auto';
 	let to = 'zh';
+const IconPerLine = 8;
 
 const Indicator = GObject.registerClass(
 class Indicator extends PanelMenu.Button {
@@ -50,16 +51,32 @@ class Indicator extends PanelMenu.Button {
 		//~ ----------------------------------------
 		const mflag = new PopupMenu.PopupBaseMenuItem({reactive: false});
 		//~ const mflag = new PopupMenu.PopupMenuItem('');
+		const vbox = new St.BoxLayout({vertical: true});
+		//~ vbox.vertical = true;
+		let hbox = [];
+		let cnt = 0;
+		let i = 0;
 		['globa-symbolic','ar','de','en','es','fr','ja','ko','ru','zh'].forEach(showicon);
 		function showicon(str){
+			if(cnt%IconPerLine == 0){
+				i = parseInt(cnt/IconPerLine);
+				hbox[i] = new St.BoxLayout({style_class: 'iconlist'});
+			}
 			let icon = new St.Icon({ gicon: local_gicon(str)});
 			let butt = new St.Button({ can_focus: true, child: icon });
 			butt.connect('button-press-event', () => {choose_lang(str);});
-			mflag.actor.add_child(butt);
+			hbox[i].add_child(butt);
+			cnt++;
 		}
+		hbox.forEach((i)=>{vbox.add_child(i)});
+		mflag.actor.add_child(vbox);
 		mflag.visible = false;
-
 		this.menu.addMenuItem(mflag);
+		//~ ----------------------------------------
+		const autos = new PopupMenu.PopupSwitchMenuItem(_('Auto translate'), true, {style_class: 'large_text'});
+		autos.connect('toggled', () => { log(autos.state); });
+		this.menu.addMenuItem(autos);
+		this._enableTransItem = autos;
 		//~ ----------------------------------------
 		this._selection = global.display.get_selection();
 		this._clipboard = St.Clipboard.get_default();
