@@ -19,6 +19,7 @@ const PopupMenu = imports.ui.popupMenu;
 	let from = 'auto';
 	let to = 'zh';
 const IconPerLine = 8;
+const AutoIcon = 'global-symbolic';
 
 const MD5 = Me.imports.md5;
 let md5 = MD5.MD5;
@@ -40,7 +41,7 @@ class Indicator extends PanelMenu.Button {
 		const input = new St.Entry({
 			name: 'searchEntry',
 			style_class: 'big_text',
-			primary_icon: new St.Icon({ gicon: local_gicon("globa-symbolic") }),
+			primary_icon: new St.Icon({ gicon: local_gicon(AutoIcon) }),
 			secondary_icon: new St.Icon({ gicon: local_gicon("zh") }),
 			can_focus: true,
 			hint_text: _('Input text to translate.'),
@@ -60,7 +61,7 @@ class Indicator extends PanelMenu.Button {
 		let hbox = [];
 		let cnt = 0;
 		let i = 0;
-		['globa-symbolic','ar','de','en','es','fr','ja','ko','ru','zh'].forEach(showicon);
+		[AutoIcon,'ar','de','en','es','fr','ja','ko','ru','zh'].forEach(showicon);
 		function showicon(str){
 			if(cnt%IconPerLine == 0){
 				i = parseInt(cnt/IconPerLine);
@@ -99,10 +100,10 @@ class Indicator extends PanelMenu.Button {
 			switch(action) {
 				 case 1:
 					input.set_primary_icon(new St.Icon({gicon: local_gicon(str)}));
-					if(str === 'globa-symbolic') from = 'auto'; else from = str;
+					if(str === AutoIcon) from = 'auto'; else from = str;
 					break;
 				 case 2:
-					if(str === 'globa-symbolic') break;	// to 不能设置为自动
+					if(str === AutoIcon) break;	// to 不能设置为自动
 					input.set_secondary_icon(new St.Icon({gicon: local_gicon(str)}));
 					to = str;
 					break;
