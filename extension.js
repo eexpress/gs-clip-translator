@@ -2,6 +2,8 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+//~ Extension point conflict: there is already a status indicator for role clip-translator@eexpss.gmail.com
+
 const GETTEXT_DOMAIN = 'clip-translator';
 
 const { GObject, GLib, Gio, St } = imports.gi;
@@ -15,9 +17,10 @@ const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
-	let action = 0;	// 0 is none, 1 is primary_icon, 2 is secondary_icon.
-	let from = 'auto';
-	let to = 'zh';
+let action = 0;	// 0 is none, 1 is primary_icon, 2 is secondary_icon.
+let from = 'auto';
+let to = 'zh';
+
 const IconPerLine = 8;
 const AutoIcon = 'global-symbolic';
 
@@ -29,18 +32,16 @@ class Indicator extends PanelMenu.Button {
 	_init() {
 		super._init(0.0, _('Clip Translator'));
 
-		this.add_child(new St.Icon({
-			//~ icon_name: 'face-devilish-symbolic',
-			gicon: local_gicon("trans-symbolic"),
-			icon_size: 30,
-			style_class: 'system-status-icon',
-		}));
-		//~ ----------------------------------------
+		const micon = new St.Icon({ gicon: local_gicon("trans-symbolic"), icon_size: 30 });
+		this.add_child(micon);
+		this.menu.connect('open-state-changed', (menu, open) => {
+			if (open && mauto.state == false && input.text) {trans_baidu();}
+		});
 		//~ ----------------------------------------
 		const minput = new PopupMenu.PopupBaseMenuItem({reactive: false});
 		const input = new St.Entry({
 			name: 'searchEntry',
-			style_class: 'big_text',
+			style_class: 'large_text',
 			primary_icon: new St.Icon({ gicon: local_gicon(AutoIcon) }),
 			secondary_icon: new St.Icon({ gicon: local_gicon("zh") }),
 			can_focus: true,
@@ -55,9 +56,7 @@ class Indicator extends PanelMenu.Button {
 		this.menu.addMenuItem(minput);
 		//~ ----------------------------------------
 		const mflag = new PopupMenu.PopupBaseMenuItem({reactive: false});
-		//~ const mflag = new PopupMenu.PopupMenuItem('');
 		const vbox = new St.BoxLayout({vertical: true});
-		//~ vbox.vertical = true;
 		let hbox = [];
 		let cnt = 0;
 		let i = 0;
@@ -78,16 +77,16 @@ class Indicator extends PanelMenu.Button {
 		mflag.visible = false;
 		this.menu.addMenuItem(mflag);
 		//~ ----------------------------------------
-		const mauto = new PopupMenu.PopupSwitchMenuItem(_('Auto translate'), true, {style_class: 'large_text'});
-		mauto.connect('toggled', () => { log(mauto.state); });
+		const mauto = new PopupMenu.PopupSwitchMenuItem(_('Auto translate'), false, {style_class: 'large_text'});
+		//~ mauto.connect('toggled', () => {});
 		this.menu.addMenuItem(mauto);
-		//~ this._enableTransItem = mauto;
 		//~ ----------------------------------------
 		this._selection = global.display.get_selection();
 		this._clipboard = St.Clipboard.get_default();
 		this._ownerChangedId = this._selection.connect('owner-changed', () => {
 			this._clipboard.get_text(St.ClipboardType.PRIMARY, (clipboard, text) => {
 				input.text = text;
+				if(mauto.state == true){this.menu.open(); trans_baidu();}
 			});
 		});
 		//~ ----------------------------------------
@@ -119,15 +118,37 @@ class Indicator extends PanelMenu.Button {
 			const key = 'KhmibtYkwpatwHEwLcym';
 			const salt = (new Date).getTime();
 			const query = (input.text)? input.text : 'test';
-			// 多个query可以用\n连接  如 query='apple\norange\nbanana\npear'
 			const str = appid + query + salt +key;
 			const sign = md5(str);
 			let url = 'http://api.fanyi.baidu.com/api/trans/vip/translate?q=';
-			url += query.replace(/ /g, '%20');
+			url += query.replace(/ /g, '%20');	//GLib.uri_escape_string
 			url += `&from=${from}&to=${to}&appid=${appid}&salt=${salt}&sign=${sign}`;
-log(url);
-			return url;
+		//~ ----------------------------------------
+		//~ https://gjs.guide/guides/gio/subprocesses.html#communicating-with-processes
+			try {
+				const proc = Gio.Subprocess.new( ['/usr/bin/curl', url],
+					Gio.SubprocessFlags.STDOUT_PIPE | Gio.SubprocessFlags.STDERR_PIPE
+				);
+
+				proc.communicate_utf8_async(null, null, (proc, res) => {
+					try {
+						let [, stdout, stderr] = proc.communicate_utf8_finish(res);
+		//~ {"from":"en","to":"zh","trans_result":[{"src":"get","dst":"\u6536\u5230"}]}
+						if (proc.get_successful()){
+							const obj = JSON.parse(stdout);
+							input.text = obj.trans_result[0].dst;
+		// JS ERROR: TypeError: obj.trans_result is undefined <== BUT IT WORKS?
+						} else {throw new Error(stderr);}
+
+					} catch (e) {logError(e);}	// finally {loop.quit();}
+				});
+			} catch (e) {logError(e);}
 		};
+		//~ ----------------------------------------
+		//~ const output = stdout.match(/"dst":"(.*)"/)[1];
+		//~ log('xxx=>', output, typeof output);	// xxx=>, \u6536\u5230, string
+		//~ const font = '\u6536\u5230';
+		//~ log('xxx=>', font, typeof font); // xxx=>, 收到, string
 		//~ ----------------------------------------
 	}
 
