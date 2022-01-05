@@ -10,6 +10,7 @@ const Gettext = imports.gettext.domain(GETTEXT_DOMAIN);
 const _ = Gettext.gettext;
 
 const ExtensionUtils = imports.misc.extensionUtils;
+const Me = ExtensionUtils.getCurrentExtension();
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
@@ -18,6 +19,9 @@ const PopupMenu = imports.ui.popupMenu;
 	let from = 'auto';
 	let to = 'zh';
 const IconPerLine = 8;
+
+const MD5 = Me.imports.md5;
+let md5 = MD5.MD5;
 
 const Indicator = GObject.registerClass(
 class Indicator extends PanelMenu.Button {
@@ -45,7 +49,7 @@ class Indicator extends PanelMenu.Button {
 		});
 		input.connect('primary-icon-clicked', ()=>{mflag.visible = true; action=1});
 		input.connect('secondary-icon-clicked', ()=>{mflag.visible = true; action=2});
-		//~ input.clutter_text.connect('activate', (actor) => {});
+		input.clutter_text.connect('activate', (actor) => {trans_baidu()});
 		minput.add(input);
 		this.menu.addMenuItem(minput);
 		//~ ----------------------------------------
@@ -73,10 +77,10 @@ class Indicator extends PanelMenu.Button {
 		mflag.visible = false;
 		this.menu.addMenuItem(mflag);
 		//~ ----------------------------------------
-		const autos = new PopupMenu.PopupSwitchMenuItem(_('Auto translate'), true, {style_class: 'large_text'});
-		autos.connect('toggled', () => { log(autos.state); });
-		this.menu.addMenuItem(autos);
-		this._enableTransItem = autos;
+		const mauto = new PopupMenu.PopupSwitchMenuItem(_('Auto translate'), true, {style_class: 'large_text'});
+		mauto.connect('toggled', () => { log(mauto.state); });
+		this.menu.addMenuItem(mauto);
+		//~ this._enableTransItem = mauto;
 		//~ ----------------------------------------
 		this._selection = global.display.get_selection();
 		this._clipboard = St.Clipboard.get_default();
@@ -88,7 +92,7 @@ class Indicator extends PanelMenu.Button {
 		//~ ----------------------------------------
 		function local_gicon(str){
 			return Gio.icon_new_for_string(
-			ExtensionUtils.getCurrentExtension().path+"/img/"+str+".svg");
+			Me.path+"/img/"+str+".svg");
 		}
 		//~ ----------------------------------------
 		function choose_lang(str){
@@ -109,6 +113,20 @@ class Indicator extends PanelMenu.Button {
 			log(`${from} -> ${to}`);
 		}
 		//~ ----------------------------------------
+		function trans_baidu(){
+			const appid = '20220103001044988';
+			const key = 'KhmibtYkwpatwHEwLcym';
+			const salt = (new Date).getTime();
+			const query = (input.text)? input.text : 'test';
+			// 多个query可以用\n连接  如 query='apple\norange\nbanana\npear'
+			const str = appid + query + salt +key;
+			const sign = md5(str);
+			let url = 'http://api.fanyi.baidu.com/api/trans/vip/translate?q=';
+			url += query.replace(/ /g, '%20');
+			url += `&from=${from}&to=${to}&appid=${appid}&salt=${salt}&sign=${sign}`;
+log(url);
+			return url;
+		};
 		//~ ----------------------------------------
 	}
 
