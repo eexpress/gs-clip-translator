@@ -20,6 +20,7 @@ const PopupMenu = imports.ui.popupMenu;
 let action = 0;	// 0 is none, 1 is primary_icon, 2 is secondary_icon.
 let from = 'auto';
 let to = 'zh';
+let newtext = false;
 
 const IconPerLine = 8;
 const AutoIcon = 'global-symbolic';
@@ -35,7 +36,7 @@ class Indicator extends PanelMenu.Button {
 		const micon = new St.Icon({ gicon: local_gicon("trans-symbolic"), icon_size: 30 });
 		this.add_child(micon);
 		this.menu.connect('open-state-changed', (menu, open) => {
-			if (open && mauto.state == false && input.text) {trans_baidu();}
+			if (open && mauto.state == false && newtext) {trans_baidu();}
 		});
 		//~ ----------------------------------------
 		const minput = new PopupMenu.PopupBaseMenuItem({reactive: false});
@@ -60,7 +61,7 @@ class Indicator extends PanelMenu.Button {
 		let hbox = [];
 		let cnt = 0;
 		let i = 0;
-		[AutoIcon,'ar','de','en','es','fr','ja','ko','ru','zh'].forEach(showicon);
+		[AutoIcon,'ara','de','en','spa','fra','jp','kor','ru','zh'].forEach(showicon);
 		function showicon(str){
 			if(cnt%IconPerLine == 0){
 				i = parseInt(cnt/IconPerLine);
@@ -85,7 +86,7 @@ class Indicator extends PanelMenu.Button {
 		this._clipboard = St.Clipboard.get_default();
 		this._ownerChangedId = this._selection.connect('owner-changed', () => {
 			this._clipboard.get_text(St.ClipboardType.PRIMARY, (clipboard, text) => {
-				input.text = text;
+				input.text = text; newtext = true;
 				if(mauto.state == true){this.menu.open(); trans_baidu();}
 			});
 		});
@@ -123,6 +124,7 @@ class Indicator extends PanelMenu.Button {
 			let url = 'http://api.fanyi.baidu.com/api/trans/vip/translate?q=';
 			url += query.replace(/ /g, '%20');	//GLib.uri_escape_string
 			url += `&from=${from}&to=${to}&appid=${appid}&salt=${salt}&sign=${sign}`;
+			//~ log(query);
 		//~ ----------------------------------------
 		//~ https://gjs.guide/guides/gio/subprocesses.html#communicating-with-processes
 			try {
@@ -134,9 +136,12 @@ class Indicator extends PanelMenu.Button {
 					try {
 						let [, stdout, stderr] = proc.communicate_utf8_finish(res);
 		//~ {"from":"en","to":"zh","trans_result":[{"src":"get","dst":"\u6536\u5230"}]}
+		//~ {"error_code":"58001","error_msg":"INVALID_TO_PARAM"}
 						if (proc.get_successful()){
+							//~ log(stdout);
 							const obj = JSON.parse(stdout);
-							input.text = obj.trans_result[0].dst;
+							if(obj.to) input.text = obj.trans_result[0].dst;
+							newtext = false;
 		// JS ERROR: TypeError: obj.trans_result is undefined <== BUT IT WORKS?
 						} else {throw new Error(stderr);}
 
@@ -152,9 +157,11 @@ class Indicator extends PanelMenu.Button {
 		//~ ----------------------------------------
 	}
 
-	destroy() {
+	destroy(){
 		this._selection.disconnect(this._ownerChangedId);
-	}
+		if (this._actor) this._actor.destroy();
+		super.destroy();
+	};
 });
 
 class Extension {
