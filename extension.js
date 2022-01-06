@@ -86,9 +86,11 @@ class Indicator extends PanelMenu.Button {
 		this._clipboard = St.Clipboard.get_default();
 		this._ownerChangedId = this._selection.connect('owner-changed', () => {
 			this._clipboard.get_text(St.ClipboardType.PRIMARY, (clipboard, text) => {
-				input.text = text.replace(/\n/g,'');
-				newtext = true;
-				if(mauto.state == true){this.menu.open(); trans_baidu();}
+				if(text){
+					input.text = text.replace(/\n/g,'');
+					newtext = true;
+					if(mauto.state == true){this.menu.open(); trans_baidu();}
+				}
 			});
 		});
 		//~ ----------------------------------------
@@ -123,7 +125,7 @@ class Indicator extends PanelMenu.Button {
 			const str = appid + query + salt +key;
 			const sign = md5(str);
 			let url = 'http://api.fanyi.baidu.com/api/trans/vip/translate?q=';
-			url += query.replace(/ /g, '%20');	//GLib.uri_escape_string
+			url += GLib.uri_escape_string(query,'',true);
 			url += `&from=${from}&to=${to}&appid=${appid}&salt=${salt}&sign=${sign}`;
 			//~ log(query);
 		//~ ----------------------------------------
