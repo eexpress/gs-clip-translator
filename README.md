@@ -16,3 +16,4 @@ auto translate selected text to locale language. (X selection "primary" / XA_PRI
 - 目前只做了百度翻译接口。
 
 ---
+Special thanks `JustPerfection`

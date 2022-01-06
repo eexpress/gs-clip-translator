@@ -129,34 +129,23 @@ class Indicator extends PanelMenu.Button {
 			url += `&from=${from}&to=${to}&appid=${appid}&salt=${salt}&sign=${sign}`;
 			//~ log(query);
 		//~ ----------------------------------------
-		//~ https://gjs.guide/guides/gio/subprocesses.html#communicating-with-processes
-			try {
-				const proc = Gio.Subprocess.new( ['/usr/bin/curl', url],
-					Gio.SubprocessFlags.STDOUT_PIPE | Gio.SubprocessFlags.STDERR_PIPE
-				);
-
-				proc.communicate_utf8_async(null, null, (proc, res) => {
-					try {
-						let [, stdout, stderr] = proc.communicate_utf8_finish(res);
-		//~ {"from":"en","to":"zh","trans_result":[{"src":"get","dst":"\u6536\u5230"}]}
-		//~ {"error_code":"58001","error_msg":"INVALID_TO_PARAM"}
-						if (proc.get_successful()){
-							//~ log(stdout);
-							const obj = JSON.parse(stdout);
-							if(obj.to) input.text = obj.trans_result[0].dst;
-							newtext = false;
-		// JS ERROR: TypeError: obj.trans_result is undefined <== BUT IT WORKS?
-						} else {throw new Error(stderr);}
-
-					} catch (e) {logError(e);}	// finally {loop.quit();}
-				});
-			} catch (e) {logError(e);}
+			const Soup = imports.gi.Soup;
+			let session = new Soup.Session();
+			const message = new Soup.Message({
+				method: 'GET',
+				uri: Soup.URI.new(url),
+			});
+			if (session.send_message(message) === Soup.Status.OK) {
+				let response = message.response_body.data;
+				//~ log(`Response: ${response}`);
+				const obj = JSON.parse(response);
+				if(obj.to) input.text = obj.trans_result[0].dst;
+				newtext = false;
+			}
 		};
 		//~ ----------------------------------------
-		//~ const output = stdout.match(/"dst":"(.*)"/)[1];
-		//~ log('xxx=>', output, typeof output);	// xxx=>, \u6536\u5230, string
-		//~ const font = '\u6536\u5230';
-		//~ log('xxx=>', font, typeof font); // xxx=>, 收到, string
+//~ {"from":"en","to":"zh","trans_result":[{"src":"get","dst":"\u6536\u5230"}]}
+//~ {"error_code":"58001","error_msg":"INVALID_TO_PARAM"}
 		//~ ----------------------------------------
 	}
 
