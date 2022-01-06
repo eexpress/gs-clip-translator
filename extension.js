@@ -86,7 +86,8 @@ class Indicator extends PanelMenu.Button {
 		this._clipboard = St.Clipboard.get_default();
 		this._ownerChangedId = this._selection.connect('owner-changed', () => {
 			this._clipboard.get_text(St.ClipboardType.PRIMARY, (clipboard, text) => {
-				input.text = text; newtext = true;
+				input.text = text.replace(/\n/g,'');
+				newtext = true;
 				if(mauto.state == true){this.menu.open(); trans_baidu();}
 			});
 		});
