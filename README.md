@@ -16,5 +16,26 @@ auto translate selected text to locale language. (X selection "primary" / XA_PRI
 - 目前只做了百度翻译接口。
 - 百度接口的日活是每小时1千次，否则当日封号。如果翻译量大，可以去[百度api平台](http://api.fanyi.baidu.com/manage/developer)注册一个帐号，得到一个ID和密钥，然后把`extension.js`文件里面的appid(121行)和key(122行)替换成自己的，把`metadata.json`文件的name,uuid等改自己的，`~/.local/share/gnome-shell/extensions/`的目录名也改成自己的uuid，这样就脱离了gnome extension的升级管理，自己用一万年。
 
+```
+⭕ tree
+.
+├── extension.js
+├── img
+│   ├── ara.svg
+│   ├── de.svg
+│   ├── en.svg
+│   ├── fra.svg
+│   ├── global-symbolic.svg
+│   ├── jp.svg
+│   ├── kor.svg
+│   ├── ru.svg
+│   ├── spa.svg
+│   ├── translator-symbolic.svg
+│   ├── trans-symbolic.svg
+│   └── zh.svg
+├── md5.js
+├── metadata.json
+└── stylesheet.css
+```
 ---
 Special thanks `JustPerfection`
