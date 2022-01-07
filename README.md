@@ -33,6 +33,10 @@ auto translate selected text to locale language. (X selection "primary" / XA_PRI
 │   ├── translator-symbolic.svg
 │   ├── trans-symbolic.svg
 │   └── zh.svg
+├── locale
+│   └── zh_CN
+│       └── LC_MESSAGES
+│           └── clip-translator.mo
 ├── md5.js
 ├── metadata.json
 └── stylesheet.css

@@ -22,7 +22,7 @@ let from = 'auto';
 let to = 'zh';
 let newtext = false;
 
-const IconPerLine = 8;
+const IconPerLine = 10;
 const AutoIcon = 'global-symbolic';
 
 const MD5 = Me.imports.md5;
