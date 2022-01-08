@@ -2,7 +2,7 @@
 
 ---
 
-第二个javascript程序。继续猜。
+第二个javascript程序。继续猜。自动安装请在[官网](https://extensions.gnome.org/)搜索`Clip Translator`。
 
 auto translate selected text to locale language. (X selection "primary" / XA_PRIMARY)
 
@@ -12,7 +12,7 @@ auto translate selected text to locale language. (X selection "primary" / XA_PRI
 - 如果关闭，选择文字后，需要点击菜单，打开后才翻译。
 - 文本输入栏，输入文字回车，会翻译。
 - 输入栏的主次图标表示翻译的语言设置，点击会弹出图标，以选择语言。世界地图表示自动检测语言。
-- 没有显示的语言，需要做一个svg文件，放到img目录，文件名前缀改成locale写法的语言名，比如fra,de,en等。参照[常见语种列表](http://api.fanyi.baidu.com/doc/21)的国家命名。在`extension.js`的64行列表里面增加新的文件名前缀。
+- 没有显示的语言，需要做一个svg文件，放到img目录，文件名前缀改成locale写法的语言名，比如fra,de,en等。参照[常见语种列表](http://api.fanyi.baidu.com/doc/21)的国家命名。在`extension.js`的64行列表里面增加新的文件名前缀。缺省语言在22行的to参数。
 - 目前只做了百度翻译接口。
 - 百度接口的日活是每小时1千次，否则当日封号。如果翻译量大，可以去[百度api平台](http://api.fanyi.baidu.com/manage/developer)注册一个帐号，得到一个ID和密钥，然后把`extension.js`文件里面的appid(121行)和key(122行)替换成自己的，把`metadata.json`文件的name,uuid等改自己的，`~/.local/share/gnome-shell/extensions/`的目录名也改成自己的uuid，这样就脱离了gnome extension的升级管理，自己用一万年。
 
