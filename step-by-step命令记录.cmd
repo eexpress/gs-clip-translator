@@ -35,10 +35,10 @@ and consider joining your translation team's mailing list
 sample.po:8: 警告： 文件头“Project-Id-Version”仍然是默认值未改变
 3 条已翻译消息.
 
-⭕ zip -r gnome-shell-clip-translator.zip extension.js metadata.json stylesheet.css md5.js img/ locale/
+⭕ zip -r clip-translator@eexpss.gmail.com.zip extension.js metadata.json stylesheet.css md5.js img/ locale/
 
-⭕ unzip -l gnome-shell-clip-translator.zip 
-Archive:  gnome-shell-clip-translator.zip
+⭕ unzip -l clip-translator@eexpss.gmail.com.zip
+Archive:  clip-translator@eexpss.gmail.com.zip
   Length      Date    Time    Name
 ---------  ---------- -----   ----
      5779  2022-01-07 11:46   extension.js
@@ -64,3 +64,5 @@ Archive:  gnome-shell-clip-translator.zip
       535  2022-01-07 12:02   locale/zh_CN/LC_MESSAGES/clip-translator.mo
 ---------                     -------
    299555                     21 files
+
+⭕ zip -u -v clip-translator@eexpss.gmail.com.zip
