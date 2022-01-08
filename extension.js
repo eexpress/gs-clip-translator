@@ -26,7 +26,7 @@ const IconPerLine = 10;
 const AutoIcon = 'global-symbolic';
 
 const MD5 = Me.imports.md5;
-let md5 = MD5.MD5;
+const md5 = MD5.MD5;
 
 const Indicator = GObject.registerClass(
 class Indicator extends PanelMenu.Button {
@@ -58,7 +58,7 @@ class Indicator extends PanelMenu.Button {
 		//~ ----------------------------------------
 		const mflag = new PopupMenu.PopupBaseMenuItem({reactive: false});
 		const vbox = new St.BoxLayout({vertical: true});
-		let hbox = [];
+		const hbox = [];
 		let cnt = 0;
 		let i = 0;
 		[AutoIcon,'ara','de','en','spa','fra','jp','kor','ru','zh'].forEach(showicon);
@@ -67,8 +67,8 @@ class Indicator extends PanelMenu.Button {
 				i = parseInt(cnt/IconPerLine);
 				hbox[i] = new St.BoxLayout({style_class: 'iconlist'});
 			}
-			let icon = new St.Icon({ gicon: local_gicon(str)});
-			let butt = new St.Button({ can_focus: true, child: icon });
+			const icon = new St.Icon({ gicon: local_gicon(str)});
+			const butt = new St.Button({ can_focus: true, child: icon });
 			butt.connect('button-press-event', () => {choose_lang(str);});
 			hbox[i].add_child(butt);
 			cnt++;
@@ -130,13 +130,13 @@ class Indicator extends PanelMenu.Button {
 			//~ log(query);
 		//~ ----------------------------------------
 			const Soup = imports.gi.Soup;
-			let session = new Soup.Session();
+			const session = new Soup.Session();
 			const message = new Soup.Message({
 				method: 'GET',
 				uri: Soup.URI.new(url),
 			});
 			if (session.send_message(message) === Soup.Status.OK) {
-				let response = message.response_body.data;
+				const response = message.response_body.data;
 				//~ log(`Response: ${response}`);
 				const obj = JSON.parse(response);
 				if(obj.to) input.text = obj.trans_result[0].dst;
