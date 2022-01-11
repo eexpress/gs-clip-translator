@@ -36,7 +36,7 @@ class Indicator extends PanelMenu.Button {
 		const micon = new St.Icon({ gicon: local_gicon("trans-symbolic"), icon_size: 30 });
 		this.add_child(micon);
 		this.menu.connect('open-state-changed', (menu, open) => {
-			if (open && mauto.state == false && newtext) {trans_baidu();}
+			if (open && mauto.state == false && newtext) {call_trans();}
 		});
 		//~ ----------------------------------------
 		const minput = new PopupMenu.PopupBaseMenuItem({reactive: false});
@@ -52,7 +52,7 @@ class Indicator extends PanelMenu.Button {
 		});
 		input.connect('primary-icon-clicked', ()=>{mflag.visible = true; action=1});
 		input.connect('secondary-icon-clicked', ()=>{mflag.visible = true; action=2});
-		input.clutter_text.connect('activate', (actor) => {trans_baidu()});
+		input.clutter_text.connect('activate', (actor) => {call_trans()});
 		minput.add(input);
 		this.menu.addMenuItem(minput);
 		//~ ----------------------------------------
@@ -89,7 +89,7 @@ class Indicator extends PanelMenu.Button {
 				if(text){
 					input.text = text.replace(/\n/g,'');
 					newtext = true;
-					if(mauto.state == true){this.menu.open(); trans_baidu();}
+					if(mauto.state == true){this.menu.open(); call_trans();}
 				}
 			});
 		});
@@ -117,7 +117,11 @@ class Indicator extends PanelMenu.Button {
 			log(`${from} -> ${to}`);
 		}
 		//~ ----------------------------------------
-		function trans_baidu(){
+		async function call_trans(){
+			await baidu_api();
+		}
+
+		function baidu_api(){
 			const appid = '20220103001044988';
 			const key = 'KhmibtYkwpatwHEwLcym';
 			const salt = (new Date).getTime();
