@@ -6,7 +6,7 @@
 
 const GETTEXT_DOMAIN = 'clip-translator';
 
-const { GObject, GLib, Gio, St } = imports.gi;
+const { GObject, Gio, St } = imports.gi;
 
 const Gettext = imports.gettext.domain(GETTEXT_DOMAIN);
 const _ = Gettext.gettext;
