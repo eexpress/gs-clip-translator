@@ -129,7 +129,8 @@ class Indicator extends PanelMenu.Button {
 			const str = appid + query + salt +key;
 			const sign = md5(str);
 			let url = 'http://api.fanyi.baidu.com/api/trans/vip/translate?q=';
-			url += GLib.uri_escape_string(query, null, true);
+			//~ url += GLib.uri_escape_string(query, null, true);
+			url += encodeURI(query);
 			url += `&from=${from}&to=${to}&appid=${appid}&salt=${salt}&sign=${sign}`;
 			//~ log(query);
 		//~ ----------------------------------------
