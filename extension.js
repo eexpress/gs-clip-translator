@@ -2,7 +2,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-//~ Extension point conflict: there is already a status indicator for role clip-translator@eexpss.gmail.com
+//~ clutter_input_focus_set_cursor_location: assertion 'clutter_input_focus_is_focused (focus)' failed
 
 const GETTEXT_DOMAIN = 'clip-translator';
 
@@ -135,7 +135,7 @@ class Indicator extends PanelMenu.Button {
 			//~ log(query);
 		//~ ----------------------------------------
 			const Soup = imports.gi.Soup;
-			const session = new Soup.SessionAsync();
+			const session = new Soup.SessionAsync({timeout: 10});
 			// 如果不异步，可能网络卡住，导致系统卡死。
 			const message = new Soup.Message({
 				method: 'GET',
