@@ -2,6 +2,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+//~ 第一次点击开菜单时出的信息，和两个 can_focus 无关。
 //~ clutter_input_focus_set_cursor_location: assertion 'clutter_input_focus_is_focused (focus)' failed
 
 const GETTEXT_DOMAIN = 'clip-translator';
