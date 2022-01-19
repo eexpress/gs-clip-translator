@@ -135,7 +135,8 @@ class Indicator extends PanelMenu.Button {
 			//~ log(query);
 		//~ ----------------------------------------
 			const Soup = imports.gi.Soup;
-			const session = new Soup.Session();
+			const session = new Soup.SessionAsync();
+			// 如果不异步，可能网络卡住，导致系统卡死。
 			const message = new Soup.Message({
 				method: 'GET',
 				uri: Soup.URI.new(url),
