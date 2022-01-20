@@ -138,17 +138,34 @@ class Indicator extends PanelMenu.Button {
 			const Soup = imports.gi.Soup;
 			const session = new Soup.SessionAsync({timeout: 10});
 			// 如果不异步，可能网络卡住，导致系统卡死。
-			const message = new Soup.Message({
-				method: 'GET',
-				uri: Soup.URI.new(url),
-			});
-			if (session.send_message(message) === Soup.Status.OK) {
+			const message = Soup.Message.new('GET',url);
+			//~ OK
+			//~ --------------------------
+			//~ http://blog.mecheye.net/2012/02/requirements-and-tips-for-getting-your-gnome-shell-extension-approved/
+			//~ const urii = 'http://api.fanyi.baidu.com/api/trans/vip/translate';
+			//~ const message = Soup.Message.new('POST',urii);
+			//~ const params = {
+					//~ 'q':encodeURI(query),
+					//~ 'appid':appid, 'salt':salt, 'sign':sign,
+					//~ 'from':from, 'to':to
+				//~ }
+			//~ const _params = JSON.stringify(params);
+			//~ const _params = Soup.form_encode_hash(params);
+			//~ const message = Soup.form_request_new_from_hash('GET', urii, _params);
+			//~ message.set_request('application/json',	Soup.MemoryUse.COPY, _params);
+			//~ message.set_request('application/x-www-form-urlencoded',	Soup.MemoryUse.COPY, _params);
+			// GET POST 都没有反映，没有 Response
+			//~ --------------------------
+			//~ const message = Soup.form_request_new_from_hash('GET', url, {});
+			//Response -> "UNAUTHORIZED USER"
+			//~ --------------------------
+			session.queue_message(message, () => {
 				const response = message.response_body.data;
 				//~ log(`Response: ${response}`);
 				const obj = JSON.parse(response);
 				if(obj.to) input.text = obj.trans_result[0].dst;
 				newtext = false;
-			}
+			});
 		};
 		//~ ----------------------------------------
 //~ {"from":"en","to":"zh","trans_result":[{"src":"get","dst":"\u6536\u5230"}]}
