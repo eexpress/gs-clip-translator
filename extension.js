@@ -43,7 +43,7 @@ class Indicator extends PanelMenu.Button {
 		const minput = new PopupMenu.PopupBaseMenuItem({reactive: false});
 		const input = new St.Entry({
 			name: 'searchEntry',
-			style_class: 'large_text',
+			style_class: 'ct-text',
 			primary_icon: new St.Icon({ gicon: local_gicon(AutoIcon) }),
 			secondary_icon: new St.Icon({ gicon: local_gicon("zh") }),
 			can_focus: true,
@@ -66,7 +66,7 @@ class Indicator extends PanelMenu.Button {
 		function showicon(str){
 			if(cnt%IconPerLine == 0){
 				i = parseInt(cnt/IconPerLine);
-				hbox[i] = new St.BoxLayout({style_class: 'iconlist'});
+				hbox[i] = new St.BoxLayout({style_class: 'ct-icon'});
 			}
 			const icon = new St.Icon({ gicon: local_gicon(str)});
 			const butt = new St.Button({ can_focus: true, child: icon });
@@ -79,7 +79,7 @@ class Indicator extends PanelMenu.Button {
 		mflag.visible = false;
 		this.menu.addMenuItem(mflag);
 		//~ ----------------------------------------
-		const mauto = new PopupMenu.PopupSwitchMenuItem(_('Auto translate'), false, {style_class: 'large_text'});
+		const mauto = new PopupMenu.PopupSwitchMenuItem(_('Auto translate'), false, {style_class: 'ct-text'});
 		//~ mauto.connect('toggled', () => {});
 		this.menu.addMenuItem(mauto);
 		//~ ----------------------------------------
@@ -143,25 +143,27 @@ class Indicator extends PanelMenu.Button {
 			//~ --------------------------
 			//~ http://blog.mecheye.net/2012/02/requirements-and-tips-for-getting-your-gnome-shell-extension-approved/
 			//~ const urii = 'http://api.fanyi.baidu.com/api/trans/vip/translate';
-			//~ const message = Soup.Message.new('POST',urii);
 			//~ const params = {
 					//~ 'q':encodeURI(query),
 					//~ 'appid':appid, 'salt':salt, 'sign':sign,
 					//~ 'from':from, 'to':to
-				//~ }
+			//~ }
+			//~ let message = Soup.Message.new('POST',urii);
 			//~ const _params = JSON.stringify(params);
 			//~ const _params = Soup.form_encode_hash(params);
 			//~ const message = Soup.form_request_new_from_hash('GET', urii, _params);
-			//~ message.set_request('application/json',	Soup.MemoryUse.COPY, _params);
+			//~ message.set_request('application/json',	Soup.MemoryUse.COPY, params);
 			//~ message.set_request('application/x-www-form-urlencoded',	Soup.MemoryUse.COPY, _params);
 			// GET POST 都没有反映，没有 Response
 			//~ --------------------------
 			//~ const message = Soup.form_request_new_from_hash('GET', url, {});
 			//Response -> "UNAUTHORIZED USER"
+			//~ const message = Soup.form_request_new_from_hash('GET', urii, params);
+			//~ No Response
 			//~ --------------------------
 			session.queue_message(message, () => {
 				const response = message.response_body.data;
-				//~ log(`Response: ${response}`);
+				log(`Response: ${response}`);
 				const obj = JSON.parse(response);
 				if(obj.to) input.text = obj.trans_result[0].dst;
 				newtext = false;
