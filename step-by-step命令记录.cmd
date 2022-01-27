@@ -66,3 +66,10 @@ Archive:  clip-translator@eexpss.gmail.com.zip
    299555                     21 files
 
 ⭕ zip -u -v clip-translator@eexpss.gmail.com.zip
+
+## 排错
+⭕ ag clip-note /var/log/syslog|grep 'Jan 25'|egrep -v '===clip-note===|JS ERROR|inflating|extracting|ignoring null'
+⭕ ag clip-note /var/log/syslog|grep 'Jan 25'|egrep -v '===clip-note===|JS ERROR|inflating|extracting'
+
+78637:Jan 25 15:36:55 eexpss-R720 org.gnome.Nautilus[4818]: Warning: : ignoring null tag in /home/eexpss/.local/share/gnome-shell/extensions/clip-note@eexpss.gmail.com/extension.js(line: 8)
+

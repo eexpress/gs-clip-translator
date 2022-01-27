@@ -2,9 +2,6 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-//~ 第一次点击开菜单时出的信息，和两个 can_focus 无关。
-//~ clutter_input_focus_set_cursor_location: assertion 'clutter_input_focus_is_focused (focus)' failed
-
 const GETTEXT_DOMAIN = 'clip-translator';
 
 const { GObject, Gio, St } = imports.gi;
@@ -80,7 +77,6 @@ class Indicator extends PanelMenu.Button {
 		this.menu.addMenuItem(mflag);
 		//~ ----------------------------------------
 		const mauto = new PopupMenu.PopupSwitchMenuItem(_('Auto translate'), false, {style_class: 'ct-text'});
-		//~ mauto.connect('toggled', () => {});
 		this.menu.addMenuItem(mauto);
 		//~ ----------------------------------------
 		this._selection = global.display.get_selection();
@@ -133,41 +129,23 @@ class Indicator extends PanelMenu.Button {
 			//~ url += GLib.uri_escape_string(query, null, true);
 			url += encodeURI(query);
 			url += `&from=${from}&to=${to}&appid=${appid}&salt=${salt}&sign=${sign}`;
-			//~ log(query);
 		//~ ----------------------------------------
-			const Soup = imports.gi.Soup;
-			const session = new Soup.SessionAsync({timeout: 10});
-			// 如果不异步，可能网络卡住，导致系统卡死。
-			const message = Soup.Message.new('GET',url);
-			//~ OK
-			//~ --------------------------
-			//~ http://blog.mecheye.net/2012/02/requirements-and-tips-for-getting-your-gnome-shell-extension-approved/
-			//~ const urii = 'http://api.fanyi.baidu.com/api/trans/vip/translate';
-			//~ const params = {
-					//~ 'q':encodeURI(query),
-					//~ 'appid':appid, 'salt':salt, 'sign':sign,
-					//~ 'from':from, 'to':to
-			//~ }
-			//~ let message = Soup.Message.new('POST',urii);
-			//~ const _params = JSON.stringify(params);
-			//~ const _params = Soup.form_encode_hash(params);
-			//~ const message = Soup.form_request_new_from_hash('GET', urii, _params);
-			//~ message.set_request('application/json',	Soup.MemoryUse.COPY, params);
-			//~ message.set_request('application/x-www-form-urlencoded',	Soup.MemoryUse.COPY, _params);
-			// GET POST 都没有反映，没有 Response
-			//~ --------------------------
-			//~ const message = Soup.form_request_new_from_hash('GET', url, {});
-			//Response -> "UNAUTHORIZED USER"
-			//~ const message = Soup.form_request_new_from_hash('GET', urii, params);
-			//~ No Response
-			//~ --------------------------
-			session.queue_message(message, () => {
-				const response = message.response_body.data;
-				log(`Response: ${response}`);
-				const obj = JSON.parse(response);
-				if(obj.to) input.text = obj.trans_result[0].dst;
-				newtext = false;
-			});
+			try{
+				const Soup = imports.gi.Soup;
+				const session = new Soup.SessionAsync({timeout: 10});
+				// 如果不异步，可能网络卡住，导致系统卡死。
+				const message = Soup.Message.new('GET',url);
+				session.queue_message(message, () => {
+					const response = message.response_body.data;
+					log(`Response: ${response}`);
+					const obj = JSON.parse(response);
+					if(obj && obj.to) input.text = obj.trans_result[0].dst;
+					//~ An active wireless connection, in infrastructure mode, involves no access point?
+					//~ Response: null
+					//~ JS ERROR: TypeError: obj is null
+					newtext = false;
+				});
+			} catch(e){throw e;}
 		};
 		//~ ----------------------------------------
 //~ {"from":"en","to":"zh","trans_result":[{"src":"get","dst":"\u6536\u5230"}]}
