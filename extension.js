@@ -111,7 +111,7 @@ class Indicator extends PanelMenu.Button {
 			}
 			mflag.visible = false;
 			action = 0;
-			log(`${from} -> ${to}`);
+			//~ log(`${from} -> ${to}`);
 		}
 		//~ ----------------------------------------
 		async function call_trans(){
@@ -137,9 +137,9 @@ class Indicator extends PanelMenu.Button {
 				const message = Soup.Message.new('GET',url);
 				session.queue_message(message, () => {
 					const response = message.response_body.data;
-					log(`Response: ${response}`);
+					//~ log(`Response: ${response}`);
 					const obj = JSON.parse(response);
-					if(obj && obj.to) input.text = obj.trans_result[0].dst;
+					if(obj.to) input.text = obj.trans_result[0].dst;
 					//~ An active wireless connection, in infrastructure mode, involves no access point?
 					//~ Response: null
 					//~ JS ERROR: TypeError: obj is null
