@@ -19,6 +19,7 @@ let action = 0;	// 0 is none, 1 is primary_icon, 2 is secondary_icon.
 let from = 'auto';
 let to = 'zh';
 let newtext = false;
+function lg(s){log("==="+Me.uuid.split('@')[0]+"===>"+s)};
 
 const IconPerLine = 10;
 const AutoIcon = 'global-symbolic';
@@ -170,6 +171,7 @@ class Extension {
 	enable() {
 		this._indicator = new Indicator();
 		Main.panel.addToStatusArea(this._uuid, this._indicator);
+		lg("start");
 	}
 
 	disable() {
