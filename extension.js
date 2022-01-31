@@ -31,6 +31,7 @@ const Indicator = GObject.registerClass(
 class Indicator extends PanelMenu.Button {
 	_init() {
 		super._init(0.0, _('Clip Translator'));
+		lg("start");
 
 		const micon = new St.Icon({ gicon: local_gicon("trans-symbolic"), icon_size: 30 });
 		this.add_child(micon);
@@ -155,6 +156,7 @@ class Indicator extends PanelMenu.Button {
 	}
 
 	destroy(){
+		lg("stop");
 		this._selection.disconnect(this._ownerChangedId);
 		if (this._actor) this._actor.destroy();
 		super.destroy();
@@ -171,7 +173,6 @@ class Extension {
 	enable() {
 		this._indicator = new Indicator();
 		Main.panel.addToStatusArea(this._uuid, this._indicator);
-		lg("start");
 	}
 
 	disable() {
