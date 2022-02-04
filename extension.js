@@ -131,17 +131,20 @@ class Indicator extends PanelMenu.Button {
 			//~ url += GLib.uri_escape_string(query, null, true);
 			url += encodeURI(query);
 			url += `&from=${from}&to=${to}&appid=${appid}&salt=${salt}&sign=${sign}`;
+
 			const urii = 'http://api.fanyi.baidu.com/api/trans/vip/translate';
 			const _params = {
 				'q' : query,
 				'from' : from,
 				'to' : to,
-				'appid' : '20220103001044988',
+				'appid' : appid,
 				'salt' : salt,
 				'sign' : sign
 			};
 			//~ let urll = urii+'?'+Soup.form_encode_hash(_params);	//直接死掉无反映？
+			lg("bp 1");
 			//~ lg(Soup.form_encode_hash(_params));
+			lg("bp 2");
 		//~ ----------------------------------------
 			try{
 				const session = new Soup.SessionAsync({timeout: 10});
