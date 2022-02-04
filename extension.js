@@ -1,7 +1,3 @@
-/* extension.js
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
-
 const GETTEXT_DOMAIN = 'clip-translator';
 
 const { GObject, Gio, St, Soup } = imports.gi;
@@ -38,7 +34,7 @@ class Indicator extends PanelMenu.Button {
 		this.menu.connect('open-state-changed', (menu, open) => {
 			if (open && mauto.state == false && newtext) {call_trans();}
 		});
-		//~ ----------------------------------------
+
 		const minput = new PopupMenu.PopupBaseMenuItem({reactive: false});
 		const input = new St.Entry({
 			name: 'searchEntry',
@@ -55,7 +51,7 @@ class Indicator extends PanelMenu.Button {
 		input.clutter_text.connect('activate', (actor) => {call_trans()});
 		minput.add(input);
 		this.menu.addMenuItem(minput);
-		//~ ----------------------------------------
+
 		const mflag = new PopupMenu.PopupBaseMenuItem({reactive: false});
 		const vbox = new St.BoxLayout({vertical: true});
 		const hbox = [];
@@ -77,10 +73,10 @@ class Indicator extends PanelMenu.Button {
 		mflag.actor.add_child(vbox);
 		mflag.visible = false;
 		this.menu.addMenuItem(mflag);
-		//~ ----------------------------------------
+
 		const mauto = new PopupMenu.PopupSwitchMenuItem(_('Auto translate'), false, {style_class: 'ct-text'});
 		this.menu.addMenuItem(mauto);
-		//~ ----------------------------------------
+
 		this._selection = global.display.get_selection();
 		this._clipboard = St.Clipboard.get_default();
 		this._ownerChangedId = this._selection.connect('owner-changed', () => {
@@ -92,12 +88,11 @@ class Indicator extends PanelMenu.Button {
 				}
 			});
 		});
-		//~ ----------------------------------------
+
 		function local_gicon(str){
-			return Gio.icon_new_for_string(
-			Me.path+"/img/"+str+".svg");
+			return Gio.icon_new_for_string( Me.path+"/img/"+str+".svg");
 		}
-		//~ ----------------------------------------
+
 		function choose_lang(str){
 			switch(action) {
 				 case 1:
@@ -127,37 +122,40 @@ class Indicator extends PanelMenu.Button {
 			const query = (input.text)? input.text : 'test';
 			const str = appid + query + salt +key;
 			const sign = md5(str);
-			let url = 'http://api.fanyi.baidu.com/api/trans/vip/translate?q=';
-			//~ url += GLib.uri_escape_string(query, null, true);
-			url += encodeURI(query);
-			url += `&from=${from}&to=${to}&appid=${appid}&salt=${salt}&sign=${sign}`;
+			const q = encodeURI(query);
+			const url = 'http://api.fanyi.baidu.com/api/trans/vip/translate';
+			const params = `q=${q}&from=${from}&to=${to}&appid=${appid}&salt=${salt}&sign=${sign}`;
 
-			const urii = 'http://api.fanyi.baidu.com/api/trans/vip/translate';
 			const _params = {
-				'q' : query,
+				'q' : q,
 				'from' : from,
 				'to' : to,
 				'appid' : appid,
 				'salt' : salt,
 				'sign' : sign
 			};
-			//~ let urll = urii+'?'+Soup.form_encode_hash(_params);	//直接死掉无反映？
-			lg("bp 1");
-			//~ lg(Soup.form_encode_hash(_params));
-			lg("bp 2");
+			//~ lg("bp 1");
+			//~ const params = Soup.form_encode_hash(_params);
+			//~ lg("bp 2");
 		//~ ----------------------------------------
 			try{
 				const session = new Soup.SessionAsync({timeout: 10});
 				// 如果不异步，可能网络卡住，导致系统卡死。
-				const message = Soup.Message.new('GET',url);
+				let message;
+				const useGET = false;
+				if(useGET){	// GET
+					message = Soup.Message.new('GET',url+"?"+params);
+				} else {	// POST
+					message = Soup.Message.new('POST',url);
+					message.set_request('application/x-www-form-urlencoded', Soup.MemoryUse.COPY, params);
+					//~ message.set_request('application/json', Soup.MemoryUse.COPY, JSON.stringify(_params));	//没反映，不支持？
+				}
+
 				session.queue_message(message, () => {
 					const response = message.response_body.data;
-					//~ log(`Response: ${response}`);
 					const obj = JSON.parse(response);
 					if(obj.to) input.text = obj.trans_result[0].dst;
 					//~ An active wireless connection, in infrastructure mode, involves no access point?
-					//~ Response: null
-					//~ JS ERROR: TypeError: obj is null
 					newtext = false;
 				});
 			} catch(e){throw e;}

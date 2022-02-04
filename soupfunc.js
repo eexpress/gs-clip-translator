@@ -45,3 +45,17 @@ function POST(url, params, callback) {
 }
 //~ POST('http://example.org/create', {'foo': 'bar'}, function(code, data) { log('post done'); log(code); log(data); Mainloop.quit(true); });
 //----------------------------------------------------------
+//~ from Just P
+const Soup = imports.gi.Soup;
+
+let session = new Soup.Session();
+let message = Soup.Message.new('POST', 'https://example.com/');
+var params = 'param1=param1value&param2=param2value';
+message.set_request('application/x-www-form-urlencoded', Soup.MemoryUse.COPY, params);
+
+if (session.send_message(message) === Soup.Status.OK) {
+    let response = message.response_body.data;
+    log(`Response: ${response}`);
+} else {
+    log('Oh! Boy!');
+}
