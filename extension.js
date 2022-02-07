@@ -43,7 +43,6 @@ class Indicator extends PanelMenu.Button {
 			secondary_icon: new St.Icon({ gicon: local_gicon("zh") }),
 			can_focus: true,
 			hint_text: _('Input text to translate.'),
-			track_hover: true,
 			x_expand: true,
 		});
 		input.connect('primary-icon-clicked', ()=>{mflag.visible = true; action=1});
@@ -135,7 +134,9 @@ class Indicator extends PanelMenu.Button {
 				'sign' : sign
 			};
 			//~ lg("bp 1");
-			//~ const params = Soup.form_encode_hash(_params);
+			//~ 在终端下正常，在这里此函数直接变黑洞？
+			//~ let o = Soup.form_encode_hash(_params);
+			//~ lg(o);
 			//~ lg("bp 2");
 		//~ ----------------------------------------
 			try{
