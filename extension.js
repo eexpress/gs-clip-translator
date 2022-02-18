@@ -1,9 +1,4 @@
-const GETTEXT_DOMAIN = 'clip-translator';
-
 const { GObject, Gio, St, Soup } = imports.gi;
-
-const Gettext = imports.gettext.domain(GETTEXT_DOMAIN);
-const _ = Gettext.gettext;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
@@ -11,11 +6,16 @@ const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
+const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
+const _ = Gettext.gettext;
+
+const debug = false;
+function lg(s){ if(debug) log("==="+Me.metadata['gettext-domain']+"===>"+s); }
+
 let action = 0;	// 0 is none, 1 is primary_icon, 2 is secondary_icon.
 let from = 'auto';
 let to = 'zh';
 let newtext = false;
-function lg(s){log("==="+Me.uuid.split('@')[0]+"===>"+s)};
 
 const IconPerLine = 10;
 const AutoIcon = 'global-symbolic';
@@ -26,7 +26,7 @@ const md5 = MD5.MD5;
 const Indicator = GObject.registerClass(
 class Indicator extends PanelMenu.Button {
 	_init() {
-		super._init(0.0, _('Clip Translator'));
+		super._init(0.0, _(Me.metadata['name']));
 		lg("start");
 
 		const micon = new St.Icon({ gicon: local_gicon("trans-symbolic"), icon_size: 30 });
@@ -179,7 +179,7 @@ class Extension {
 	constructor(uuid) {
 		this._uuid = uuid;
 
-		ExtensionUtils.initTranslations(GETTEXT_DOMAIN);
+		ExtensionUtils.initTranslations();
 	}
 
 	enable() {
