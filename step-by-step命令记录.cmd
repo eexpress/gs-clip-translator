@@ -53,6 +53,8 @@ and consider joining your translation team's mailing list
 
 # 自动编译 po/zh_CN.po 和 schemas/*.xml 文件。
 ⭕ gnome-extensions pack -f --extra-source=clip-note-symbolic.svg
+⭕ gnome-extensions pack -f --extra-source=md5.js --extra-source=img
+
 
 ## 排错
 ⭕ ag clip-note /var/log/syslog|grep 'Jan 25'|egrep -v '===clip-note===|JS ERROR|inflating|extracting|ignoring null'
