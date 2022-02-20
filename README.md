@@ -1,5 +1,7 @@
 # gnome-shell-clip-translator
 
+[<img alt="" height="80" src="https://raw.githubusercontent.com/andyholmes/gnome-shell-extensions-badge/master/get-it-on-ego.svg?sanitize=true">](https://extensions.gnome.org/extension/4744/clip-translator/)
+
 ---
 
 第二个javascript程序。继续猜。自动安装请在[官网](https://extensions.gnome.org/)搜索`Clip Translator`。
