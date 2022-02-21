@@ -1,21 +1,24 @@
-const { GObject, Gio, St, Soup } = imports.gi;
+const { GObject, GLib, Gio, St, Soup } = imports.gi;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
+const ByteArray = imports.byteArray;
 
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
 
-const debug = false;
+//~ const debug = false;
+const debug = true;
 function lg(s){ if(debug) log("==="+Me.metadata['gettext-domain']+"===>"+s); }
 
 let action = 0;	// 0 is none, 1 is primary_icon, 2 is secondary_icon.
 let from = 'auto';
 let to = 'zh';
 let newtext = false;
+const configfile = Me.path+"/config";
 
 const IconPerLine = 10;
 const AutoIcon = 'global-symbolic';
@@ -28,6 +31,18 @@ class Indicator extends PanelMenu.Button {
 	_init() {
 		super._init(0.0, _(Me.metadata['name']));
 		lg("start");
+		const [ok, content] = GLib.file_get_contents(configfile);
+		if(ok){
+			lg(content);
+			//~ let r = imports.byteArray.toString(content);
+			let r = (content instanceof Uint8Array) ? ByteArray.toString(content) : content.toString();
+			//~ lg(typeof r);
+			lg(r);
+			//~ const c = r.split(" -> ");
+			//~ lg(c[0]);
+			//~ lg(c[1]);
+		}
+
 
 		const micon = new St.Icon({ gicon: local_gicon("trans-symbolic"), icon_size: 30 });
 		this.add_child(micon);
@@ -169,6 +184,7 @@ class Indicator extends PanelMenu.Button {
 
 	destroy(){
 		lg("stop");
+		GLib.file_set_contents(configfile, `${from} -> ${to}`);
 		this._selection.disconnect(this._ownerChangedId);
 		if (this._actor) this._actor.destroy();
 		super.destroy();
