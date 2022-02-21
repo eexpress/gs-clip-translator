@@ -10,8 +10,8 @@ const ByteArray = imports.byteArray;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
 
-//~ const debug = false;
-const debug = true;
+const debug = false;
+//~ const debug = true;
 function lg(s) {
 	if (debug) log("===" + Me.metadata['gettext-domain'] + "===>" + s);
 }
