@@ -21,6 +21,7 @@ let from = 'auto';
 let to = 'zh';
 let newtext = false;
 const configfile = Me.path + "/config";
+const lang = [ 'auto', 'ara', 'de', 'en', 'spa', 'fra', 'jp', 'kor', 'ru', 'zh' ];
 
 const IconPerLine = 10;
 
@@ -32,11 +33,14 @@ const Indicator = GObject.registerClass(
 		_init() {
 			super._init(0.0, _(Me.metadata['name']));
 			lg("start");
-			const [ok, content] = GLib.file_get_contents(configfile);
-			if (ok) {
-				const c = ByteArray.toString(content).split(" -> ");
-				from = c[0];
-				to = c[1];
+
+			if (GLib.file_test(configfile, GLib.FileTest.IS_REGULAR)) {
+				const [ok, content] = GLib.file_get_contents(configfile);
+				if (ok) {
+					const c = ByteArray.toString(content).split(" -> ");
+					if (lang.includes(c[0])) from = c[0];
+					if (lang.indexOf(c[1]) > 0) to = c[1];
+				}
 			}
 
 			const micon = new St.Icon({ gicon : local_gicon("trans-symbolic"), icon_size : 30 });
@@ -66,7 +70,7 @@ const Indicator = GObject.registerClass(
 			const hbox = [];
 			let cnt = 0;
 			let i = 0;
-			['auto', 'ara', 'de', 'en', 'spa', 'fra', 'jp', 'kor', 'ru', 'zh'].forEach(showicon);
+			lang.forEach(showicon);
 			function showicon(str) {
 				if (cnt % IconPerLine == 0) {
 					i = parseInt(cnt / IconPerLine);
