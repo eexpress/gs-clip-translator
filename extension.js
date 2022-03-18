@@ -171,8 +171,10 @@ const Indicator = GObject.registerClass(
 					// 如果不异步，可能网络卡住，导致系统卡死。
 					let message;
 					const useGET = false;
+					//~ const useGET = true;
 					if (useGET) { // GET
 						message = Soup.Message.new('GET', url + "?" + params);
+						//~ message = Soup.form_request_new_from_hash('GET', url, _params);	//也变黑洞？在weather此函数正常。
 					} else { // POST
 						message = Soup.Message.new('POST', url);
 						message.set_request('application/x-www-form-urlencoded', Soup.MemoryUse.COPY, params);
