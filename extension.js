@@ -54,7 +54,7 @@ const Indicator = GObject.registerClass(
 				}
 			}
 
-			const micon = new St.Icon({ gicon : local_gicon("trans-symbolic"), icon_size : 30 });
+			const micon = new St.Icon({ gicon : local_gicon("trans-symbolic"), style_class : 'system-status-icon' });
 			this.add_child(micon);
 			this.menu.connect('open-state-changed', (menu, open) => {
 				if (open && mauto.state == false && newtext) { call_trans(); }
