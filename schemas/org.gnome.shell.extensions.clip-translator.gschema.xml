@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+
+  <enum id="org.gnome.shell.extensions.clip-translator.enum">
+    <value value="0" nick="auto"/>
+    <value value="1" nick="ara"/>
+    <value value="2" nick="de"/>
+    <value value="3" nick="en"/>
+    <value value="4" nick="spa"/>
+    <value value="5" nick="fra"/>
+    <value value="6" nick="jp"/>
+    <value value="7" nick="kor"/>
+    <value value="8" nick="ru"/>
+    <value value="9" nick="zh"/>
+<!--
+    <value value="th" nick="泰语"/>
+    <value value="pt" nick="葡萄牙语"/>
+    <value value="it" nick="意大利语"/>
+    <value value="el" nick="希腊语"/>
+    <value value="nl" nick="荷兰语"/>
+    <value value="pl" nick="波兰语"/>
+    <value value="bul" nick="保加利亚语"/>
+    <value value="est" nick="爱沙尼亚语"/>
+    <value value="dan" nick="丹麦语"/>
+    <value value="fin" nick="芬兰语"/>
+    <value value="cs" nick="捷克语"/>
+    <value value="rom" nick="罗马尼亚语"/>
+    <value value="slo" nick="斯洛文尼亚语"/>
+    <value value="swe" nick="瑞典语"/>
+    <value value="hu" nick="匈牙利语"/>
+    <value value="cht" nick="繁体中文"/>
+    <value value="vie" nick="越南语"/>
+    <value value="yue" nick="粤语"/>
+    <value value="wyw" nick="文言文"/>
+-->
+  </enum>
+
+  <schema id="org.gnome.shell.extensions.clip-translator"
+    path="/org/gnome/shell/extensions/clip-translator/">
+
+    <key name="from" enum="org.gnome.shell.extensions.clip-translator.enum">
+      <default>"auto"</default>
+      <summary>translate from language</summary>
+    </key>
+
+    <key name="to" enum="org.gnome.shell.extensions.clip-translator.enum">
+      <default>"zh"</default>
+      <summary>translate to language</summary>
+    </key>
+
+  </schema>
+</schemalist>

@@ -7,20 +7,20 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const ByteArray = imports.byteArray;
 
-const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
+const _domain = Me.metadata['gettext-domain'];
+const Gettext = imports.gettext.domain(_domain);
 const _ = Gettext.gettext;
 
 const debug = false;
 //~ const debug = true;
 function lg(s) {
-	if (debug) log("===" + Me.metadata['gettext-domain'] + "===>" + s);
+	if (debug) log("===" + _domain + "===>" + s);
 }
 
 let action = 0; // 0 is none, 1 is primary_icon, 2 is secondary_icon.
 let from = 'auto';
 let to = 'zh';
 let newtext = false;
-const configfile = Me.path + "/config";
 const lang = [ 'auto', 'ara', 'de', 'en', 'spa', 'fra', 'jp', 'kor', 'ru', 'zh' ];
 //~ 名称	代码	名称	代码	名称	代码
 //~ 自动检测	auto	中文	zh	英语	en
@@ -38,21 +38,15 @@ const IconPerLine = 10;
 
 const MD5 = Me.imports.md5;
 const md5 = MD5.MD5;
+const settings = ExtensionUtils.getSettings("org.gnome.shell.extensions." + _domain);
 
 const Indicator = GObject.registerClass(
 	class Indicator extends PanelMenu.Button {
 		_init() {
 			super._init(0.0, _(Me.metadata['name']));
-			lg("start");
 
-			if (GLib.file_test(configfile, GLib.FileTest.IS_REGULAR)) {
-				const [ok, content] = GLib.file_get_contents(configfile);
-				if (ok) {
-					const c = ByteArray.toString(content).split(" -> ");
-					if (lang.includes(c[0])) from = c[0];
-					if (lang.indexOf(c[1]) > 0) to = c[1];
-				}
-			}
+			from = settings.get_string('from');
+			to = settings.get_string('to');
 
 			const micon = new St.Icon({ gicon : local_gicon("trans-symbolic"), style_class : 'system-status-icon' });
 			this.add_child(micon);
@@ -197,8 +191,8 @@ const Indicator = GObject.registerClass(
 		}
 
 		destroy() {
-			lg("stop");
-			GLib.file_set_contents(configfile, `${from} -> ${to}`);
+			settings.set_string('from', from);
+			settings.set_string('to', to);
 			this._selection.disconnect(this._ownerChangedId);
 			if (this._actor) this._actor.destroy();
 			super.destroy();
