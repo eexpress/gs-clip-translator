@@ -48,6 +48,11 @@ const Indicator = GObject.registerClass(
 			from = settings.get_string('from');
 			to = settings.get_string('to');
 
+			this.resource = Gio.Resource.load(Me.path + '/translate.gresource');
+			this.resource._register();
+			//~ ⭕ glib-compile-resources translate.xml
+			//~ ⭕ gresource list translate.gresource
+
 			const micon = new St.Icon({ gicon : local_gicon("trans-symbolic"), style_class : 'system-status-icon' });
 			this.add_child(micon);
 			this.menu.connect('open-state-changed', (menu, open) => {
@@ -111,7 +116,8 @@ const Indicator = GObject.registerClass(
 			});
 
 			function local_gicon(str) {
-				return Gio.icon_new_for_string(Me.path + "/img/" + str + ".svg");
+				//~ return Gio.icon_new_for_string(Me.path + "/img/" + str + ".svg");
+				return Gio.Icon.new_for_string("resource:///img/" + str + ".svg");
 			}
 
 			function choose_lang(str) {
@@ -193,6 +199,7 @@ const Indicator = GObject.registerClass(
 		destroy() {
 			settings.set_string('from', from);
 			settings.set_string('to', to);
+			this.resource._unregister();
 			this._selection.disconnect(this._ownerChangedId);
 			if (this._actor) this._actor.destroy();
 			super.destroy();

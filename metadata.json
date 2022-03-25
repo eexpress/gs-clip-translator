@@ -3,12 +3,8 @@
   "description": "Translate from Clipboard content",
   "name": "Clip Translator",
   "gettext-domain": "clip-translator",
-  "shell-version": [
-    "40",
-    "41",
-    "42"
-  ],
+  "shell-version": ["40", "41", "42"],
   "url": "https://github.com/eexpress/gnome-shell-clip-translator",
   "uuid": "clip-translator@eexpss.gmail.com",
-  "version": 10
+  "version": 13
 }
