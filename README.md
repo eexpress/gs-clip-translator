@@ -27,27 +27,20 @@ auto translate selected text to locale language. (X selection "primary" / XA_PRI
 
 ```
 ⭕ tree ~/.local/share/gnome-shell/extensions/clip-translator@eexpss.gmail.com/
-.
 ├── extension.js
-├── img
-│   ├── ara.svg
-│   ├── de.svg
-│   ├── en.svg
-│   ├── fra.svg
-│   ├── global-symbolic.svg
-│   ├── jp.svg
-│   ├── kor.svg
-│   ├── ru.svg
-│   ├── spa.svg
-│   ├── translator-symbolic.svg
-│   ├── trans-symbolic.svg
-│   └── zh.svg
+├── icon.gresource
 ├── locale
-│   └── zh_CN
-│       └── LC_MESSAGES
-│           └── clip-translator.mo
+│   ├── nl
+│   │   └── LC_MESSAGES
+│   │       └── clip-translator.mo
+│   └── zh_CN
+│       └── LC_MESSAGES
+│           └── clip-translator.mo
 ├── md5.js
 ├── metadata.json
+├── schemas
+│   ├── gschemas.compiled
+│   └── org.gnome.shell.extensions.clip-translator.gschema.xml
 └── stylesheet.css
 ```
 ---

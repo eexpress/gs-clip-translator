@@ -48,7 +48,7 @@ const Indicator = GObject.registerClass(
 			from = settings.get_string('from');
 			to = settings.get_string('to');
 
-			this.resource = Gio.Resource.load(Me.path + '/translate.gresource');
+			this.resource = Gio.Resource.load(Me.path + '/icon.gresource');
 			this.resource._register();
 			//~ ⭕ glib-compile-resources translate.xml
 			//~ ⭕ gresource list translate.gresource
@@ -134,7 +134,6 @@ const Indicator = GObject.registerClass(
 				}
 				mflag.visible = false;
 				action = 0;
-				//~ log(`${from} -> ${to}`);
 			}
 			//~ ----------------------------------------
 			async function call_trans() {
