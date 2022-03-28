@@ -8,8 +8,9 @@ const PopupMenu = imports.ui.popupMenu;
 const ByteArray = imports.byteArray;
 
 const _domain = Me.metadata['gettext-domain'];
-const Gettext = imports.gettext.domain(_domain);
-const _ = Gettext.gettext;
+//~ const Gettext = imports.gettext.domain(_domain);
+//~ const _ = Gettext.gettext;
+const _ = ExtensionUtils.gettext;	//在metadata.json设置了gettext-domain后，可用。
 
 const debug = false;
 //~ const debug = true;
