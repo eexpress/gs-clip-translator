@@ -39,15 +39,17 @@ const IconPerLine = 10;
 
 const MD5 = Me.imports.md5;
 const md5 = MD5.MD5;
-const settings = ExtensionUtils.getSettings("org.gnome.shell.extensions." + _domain);
 
 const Indicator = GObject.registerClass(
 	class Indicator extends PanelMenu.Button {
 		_init() {
 			super._init(0.0, _(Me.metadata['name']));
 
-			from = settings.get_string('from');
-			to = settings.get_string('to');
+			//~ this.settings = ExtensionUtils.getSettings("org.gnome.shell.extensions." + _domain);
+			this.settings = ExtensionUtils.getSettings();	//metadata.json里面设置"settings-schema"，就可以省略参数。
+
+			from = this.settings.get_string('from');
+			to = this.settings.get_string('to');
 
 			this.resource = Gio.Resource.load(Me.path + '/icon.gresource');
 			this.resource._register();
@@ -197,8 +199,8 @@ const Indicator = GObject.registerClass(
 		}
 
 		destroy() {
-			settings.set_string('from', from);
-			settings.set_string('to', to);
+			this.settings.set_string('from', from);
+			this.settings.set_string('to', to);
 			this.resource._unregister();
 			this._selection.disconnect(this._ownerChangedId);
 			if (this._actor) this._actor.destroy();

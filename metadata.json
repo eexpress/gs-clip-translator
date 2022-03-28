@@ -6,5 +6,6 @@
   "shell-version": ["40", "41", "42"],
   "url": "https://github.com/eexpress/gnome-shell-clip-translator",
   "uuid": "clip-translator@eexpss.gmail.com",
+  "settings-schema": "org.gnome.shell.extensions.clip-translator",
   "version": 13
 }
