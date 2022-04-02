@@ -186,6 +186,7 @@ const Indicator = GObject.registerClass(
 					session.queue_message(message, () => {
 						const response = message.response_body.data;
 						const obj = JSON.parse(response);
+						if (!obj) return;	//obj is null
 						if (obj.to) input.text = obj.trans_result[0].dst;
 						//~ An active wireless connection, in infrastructure mode, involves no access point?
 						newtext = false;
