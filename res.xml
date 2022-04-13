@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+	<gresource prefix="/">
+
+	<file>img/jp.svg</file>
+	<file>img/zh.svg</file>
+	<file>img/spa.svg</file>
+	<file>img/auto.svg</file>
+	<file>img/de.svg</file>
+	<file>img/en.svg</file>
+	<file>img/ru.svg</file>
+	<file>img/kor.svg</file>
+	<file>img/translator-symbolic.svg</file>
+	<file>img/ara.svg</file>
+	<file>img/fra.svg</file>
+	<file>img/trans-symbolic.svg</file>
+
+	</gresource>
+</gresources>
