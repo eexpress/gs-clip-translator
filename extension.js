@@ -12,11 +12,7 @@ const _domain = Me.metadata['gettext-domain'];
 //~ const _ = Gettext.gettext;
 const _ = ExtensionUtils.gettext;	//在metadata.json设置了gettext-domain后，可用。
 
-const debug = false;
-//~ const debug = true;
-function lg(s) {
-	if (debug) log("===" + _domain + "===>" + s);
-}
+function lg(s) { log('===\x1b[91;1;5;1m' + _domain + '\x1b[0m===>' + s); }
 
 let action = 0; // 0 is none, 1 is primary_icon, 2 is secondary_icon.
 let from = 'auto';
